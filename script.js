@@ -57,10 +57,13 @@ function displayDayPlans() {
             console.log(moment(timeBlock.date).format('MM-DD-YYYY'));
         });
         //-------------------------------------------------------
+
+        //This block of code determines if we are on the same day that the entries in local storage
         var updatedPlansArray = currentPlansArray.filter(timeBlock =>{
             return moment(timeBlock.date).format('MM-DD-YYYY') === now.format('MM-DD-YYYY');
         });
-        console.log(updatedPlansArray);
+        //--------------------------------------------------------
+
         updatedPlansArray.forEach(function (timeBlock) {
             $(`textarea[data-time=${timeBlock.hour}]`).val(timeBlock.text);
         });
