@@ -1,5 +1,5 @@
 //This saves "right now" in a variable, from which we can obtain useful information
-var now = moment().subtract(11, 'hours');
+var now = moment();
 
 //Today's date || Top of the page
 $('#currentDay').text(now.format('dddd, MMMM Do YYYY, kk:mm a'));
@@ -16,7 +16,40 @@ $('.text').each(function(index){
     }else if(timeDifference < -1){
         $(this).addClass('past');
     }
+    //This line is for development purpose only
     console.log(index + ": " + timeDifference);
-})
+});
+
+function makeEntry(u_text,u_hour){
+    return {
+        text: u_text,
+        hour: u_hour,
+        date: moment(now)
+    }
+}
+
+//Saving to Local Storage buttons
+$('.fa-save').on('click', function(){
+    var buttonClikedTimeInfo = $(this).attr('data-time');
+    var correspondingTextarea = $(`textarea[data-time=${buttonClikedTimeInfo}]`)
+    var savedText = correspondingTextarea.val();
+    var newEntry = makeEntry(savedText, buttonClikedTimeInfo);
+    if(localStorage.getItem('day_plans')){
+        var updatedDayPlans = JSON.parse(localStorage.getItem('day_plans'));
+        updatedDayPlans.push(newEntry);
+        localStorage.setItem('day_plans', JSON.stringify(updatedDayPlans));
+    } else {
+        var dayPlans = [];
+        dayPlans.push(newEntry);
+        localStorage.setItem('day_plans', JSON.stringify(dayPlans));
+    }
+    console.log(now);
+});
+
+function displayDayPlans(){
+    
+}
+
+
 
 
