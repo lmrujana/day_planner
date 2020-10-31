@@ -45,24 +45,29 @@ $('.fa-save').on('click', function () {
         dayPlans.push(newEntry);
         localStorage.setItem('day_plans', JSON.stringify(dayPlans));
     }
+    //This line is for development purpose only
     console.log(now);
 });
 
 function displayDayPlans() {
     if (localStorage.getItem('day_plans')) {
         var currentPlansArray = JSON.parse(localStorage.getItem('day_plans'));
+        //This block of code is for develepment purpose only
         currentPlansArray.forEach(timeBlock =>{
-            //console.log(timeBlock.date);
-            console.log(moment(timeBlock.date).date());
-            //console.log(moment(timeBlock.date).year().month().date());
-        })
-        currentPlansArray.forEach(function (timeBlock) {
-            $(`textarea[data-time=${timeBlock.hour}]`).val(timeBlock.text)
+            console.log(moment(timeBlock.date).format('MM-DD-YYYY'));
         });
+        //-------------------------------------------------------
+        var updatedPlansArray = currentPlansArray.filter(timeBlock =>{
+            return moment(timeBlock.date).format('MM-DD-YYYY') === now.format('MM-DD-YYYY');
+        });
+        console.log(updatedPlansArray);
+        updatedPlansArray.forEach(function (timeBlock) {
+            $(`textarea[data-time=${timeBlock.hour}]`).val(timeBlock.text);
+        });
+        localStorage.setItem('day_plans', JSON.stringify(updatedPlansArray));
     }
 };
 
 displayDayPlans();
-//console.log(now.date())
 
 
